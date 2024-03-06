@@ -26,22 +26,22 @@ using namespace std;
                     dados.id= atoi(token.c_str());
                     break;
                 case 1:
-                    strncpy(dados.title, token.c_str(), T_TITLE);
-                    dados.title[T_TITLE-1] = 0;
+                    strncpy(dados.title, token.c_str(), TITLE_SIZE);
+                    dados.title[TITLE_SIZE-1] = 0;
                     break;
                 case 2:
                     dados.year = atoi(token.c_str());
                     break;
                 case 3:
-                    strncpy(dados.author, token.c_str(), T_AUTHOR);
-                    dados.author[T_AUTHOR-1] = 0;
+                    strncpy(dados.author, token.c_str(), AUTHOR_SIZE);
+                    dados.author[AUTHOR_SIZE-1] = 0;
                     break;
                 case 4:
                     dados.citations = atoi(token.c_str());
                     break;
                 case 5:
-                    strncpy(dados.update, token.c_str(), T_UPDATE);
-                    dados.update[T_UPDATE-1] = 0;
+                    strncpy(dados.update, token.c_str(), UPDATE_SIZE);
+                    dados.update[UPDATE_SIZE-1] = 0;
                     break;
             }
             linha.erase(0, pos + string("\";").length());   
@@ -55,8 +55,8 @@ using namespace std;
             if(strcmp(token.c_str(), "NULL") != 0){
                 token = linha.substr(1, linha.length()-3);
             }
-            strncpy(dados.snippet, token.c_str(), T_SNIPPET);
-            dados.title[T_SNIPPET-1] = 0;
+            strncpy(dados.snippet, token.c_str(), SNIPPET_SIZE);
+            dados.title[SNIPPET_SIZE-1] = 0;
         }
         return dados;
     }
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]){
     }
 
     // Cria o arquivo de dados, formato binário
-    fstream arquivoDados(HASH_FILE_NAME,fstream::in|fstream::out|fstream::trunc|ios::binary);
+    fstream arquivoDados(DATA_FILE,fstream::in|fstream::out|fstream::trunc|ios::binary);
     /**/inicializaArquivoDeSaida(&arquivoDados);
 
     // Cria os arquivos de índices primário e secundário, formato binário
@@ -97,10 +97,10 @@ int main(int argc, char *argv[]){
     }
 
     cout << "Arquivo Hash criado, começando o arquivo de índice primário" << endl;
-    /**/InsereArqIndicePrim(&arquivoDados, &arquivoIndicePrim);
+    InsereArqIndicePrim(&arquivoDados, &arquivoIndicePrim);
 
     cout << "Arquivo de indice primario criado, começando o arquivo de de índice secundário" << endl;
-    /**/InsereArqIndiceSec(&arquivoDados, &arquivoIndiceSec);
+    InsereArqIndiceSec(&arquivoDados, &arquivoIndiceSec);
 
     cout << "Arquivo de indice secundario criado" << endl;
 
@@ -109,5 +109,4 @@ int main(int argc, char *argv[]){
     arquivoDados.close();
     arquivoIndicePrim.close();
     arquivoIndiceSec.close();
-    
 }
